@@ -1,0 +1,10 @@
+name: xxx
+dependencies:
+- python=3.5
+- numpy
+- scipy
+- pip:
+  - nameko==2.3.1
+  - nltk==3.2.1
+  - pandas==0.18.1
+  - sklearn==0.0

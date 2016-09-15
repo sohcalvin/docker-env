@@ -1,0 +1,10 @@
+FROM continuumio/miniconda3  
+
+MAINTAINER Calvin Soh
+
+RUN mkdir -p /home/vcap/app
+WORKDIR /home/vcap/app
+COPY environment.yml . 
+RUN conda env create -n dep_env -f environment.yml
+
+RUN echo "source activate dep_env" >> /root/.bashrc 
