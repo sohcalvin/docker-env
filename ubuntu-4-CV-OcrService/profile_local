@@ -1,0 +1,1 @@
+export VCAP_SERVICES='{"p-rabbitmq": [ { "credentials": { "uri": "amqp://guest:guest@172.17.0.1" } } ] , "mongodb":[{"credentials":{"uri":"mongodb://172.17.0.1:27017"}}]}'

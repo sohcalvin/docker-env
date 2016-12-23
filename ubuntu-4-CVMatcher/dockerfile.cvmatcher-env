@@ -1,0 +1,55 @@
+# TO BUILD IMAGE     : docker build -f dockerfile.cvmatcher-env -t img-cvmatcher-env .
+# TO RUN             : docker run -dt --name cvmatcher-env -p 9000:9000 img-cvmatcher-env bash 
+# TO Enter container : docker exec -it cvmatcher-env bash
+
+# STEPS 
+# git clone https://github.wdf.sap.corp/ml-base/CV-Recommender.git
+# cd /home/vcap/app/CV-Recommender/recruit2.0
+# npm install
+# bower install --allow-root
+# grunt serve
+
+
+
+FROM ubuntu:14.04
+
+RUN apt-get -y update && apt-get install -y \
+curl \
+software-properties-common \
+git \
+vim
+
+# Java
+RUN add-apt-repository -y ppa:openjdk-r/ppa
+RUN apt-get -y update && apt-get install -y \
+openjdk-8-jdk 
+
+# Nodejs
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN apt-get install -y nodejs
+
+
+# Grunt cli
+RUN npm install -g grunt-cli 
+RUN npm install -g bower 
+
+RUN mkdir -p /home/vcap/app
+WORKDIR /home/vcap/app
+
+# CF CLI
+COPY software/cf-cli-installer_6.23.0_x86-64.deb .
+#RUN curl -sL 'https://cli.run.pivotal.io/stable?release=debian64&version=6.23.0&source=github-rel' -o /home/vcap/app/cf-cli-installer_6.23.0_x86-64.deb
+RUN dpkg -i cf-cli-installer_6.23.0_x86-64.deb && apt-get install -f
+
+# Git https
+RUN git config --global http.sslverify false
+
+
+
+# SCALA : 
+#WORKDIR /opt
+#RUN curl -O http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.deb
+#RUN dpkg -i scala-2.11.8.deb
+
+
+#deletthis RUN bash software/node_setup_6.x 
