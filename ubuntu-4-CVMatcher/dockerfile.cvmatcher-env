@@ -36,15 +36,21 @@ RUN npm install -g bower
 RUN mkdir -p /home/vcap/app
 WORKDIR /home/vcap/app
 
+# Static software dependencies
+COPY software ./software
+
 # CF CLI
-COPY software/cf-cli-installer_6.23.0_x86-64.deb .
+#COPY software/cf-cli-installer_6.23.0_x86-64.deb .
 #RUN curl -sL 'https://cli.run.pivotal.io/stable?release=debian64&version=6.23.0&source=github-rel' -o /home/vcap/app/cf-cli-installer_6.23.0_x86-64.deb
-RUN dpkg -i cf-cli-installer_6.23.0_x86-64.deb && apt-get install -f
+RUN dpkg -i software/cf-cli-installer_6.23.0_x86-64.deb && apt-get install -f
 
 # Git https
 RUN git config --global http.sslverify false
 
-
+# Miniconda
+RUN chmod 744 ./software/Miniconda3-latest-Linux-x86_64.sh
+RUN ./software/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda3
+ENV PATH ${PATH}:/opt/miniconda3/bin
 
 # SCALA : 
 #WORKDIR /opt
